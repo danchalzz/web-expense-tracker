@@ -345,6 +345,13 @@ footer {
 .hidden { display: none; }
 
 canvas {
-    max-width: 50%;
+    max-width: 100%;
     height: auto;
+}
+
+#categoryChart { 
+max-width: 400px:
+height: auto;
+margin: 0 auto;
+display: block;
 }
