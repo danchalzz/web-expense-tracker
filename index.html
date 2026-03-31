@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+           apiKey: "AIzaSyAMmyv39XdlFE8DsJ5U8IhpavF5b6JFfVo",
+           authDomain: "benin-expense-tracker.firebaseapp.com",
+           projectId: "benin-expense-tracker",
+           storageBucket: "benin-expense-tracker.firebasestorage.app",
+           messagingSenderId: "138303766823",
+           appId: "1:138303766823:web:4e72e0df2e94dce5abe902"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <title>Benin Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-logo">💰 Dépenses Bénin</div>
+    </div>
+
+    <div class="container" style="max-width:400px;">
+        <div class="card">
+            <h1 class="text-center">Connexion</h1>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Mot de passe">
+            <button onclick="login()" class="btn" style="width:100%;">Se connecter</button>
+            <p class="text-center mt-20">Pas de compte? <a href="#" onclick="createAccount()">S'inscrire</a></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

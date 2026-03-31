@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter une dépense - Benin Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- Firebase config (replace with YOUR config) -->
+    <script>
+        const firebaseConfig = {
+           apiKey: "AIzaSyAMmyv39XdlFE8DsJ5U8IhpavF5b6JFfVo",
+           authDomain: "benin-expense-tracker.firebaseapp.com",
+           projectId: "benin-expense-tracker",
+           storageBucket: "benin-expense-tracker.firebasestorage.app",
+           messagingSenderId: "138303766823",
+           appId: "1:138303766823:web:4e72e0df2e94dce5abe902"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+<body>
+    <body>
+    <div class="navbar">
+        <div class="nav-logo">💰 Dépenses Bénin</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="add-expense.html">Ajouter</a>
+            <a href="#" onclick="logout()">Déconnexion</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>➕ Ajouter une dépense</h1>
+        <div class="card" style="max-width:600px; margin:0 auto;">
+            <form id="expenseForm">
+                <label for="category">Catégorie :</label>
+                <select id="category" required>
+                    <option value="">-- Choisissez --</option>
+                    <option value="Nourriture">Nourriture</option>
+                    <option value="Transport (Zemidjan)">Transport (Zemidjan)</option>
+                    <option value="Communication (Airtime)">Communication (Airtime)</option>
+                    <option value="Énergie (SBEE)">Énergie (SBEE)</option>
+                    <option value="Santé">Santé</option>
+                    <option value="Logement">Logement</option>
+                    <option value="Éducation">Éducation</option>
+                    <option value="Divertissement">Divertissement</option>
+                    <option value="Autre">Autre</option>
+                </select>
+
+                <label for="amount">Montant (XOF) :</label>
+                <input type="number" id="amount" min="0" step="1" required>
+
+                <label for="date">Date :</label>
+                <input type="date" id="date" required>
+
+                <label for="description">Description :</label>
+                <textarea id="description" rows="3"></textarea>
+
+                <div class="text-center">
+                    <button type="submit" class="btn">Enregistrer la dépense</button>
+                    <a href="dashboard.html" class="btn secondary">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add logout function if not already in script -->
+    <script>
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+
+    <script>
+        // Check if user is logged in
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                window.location.href = 'index.html'; // redirect to login if not logged in
+            }
+        });
+
+        // Handle form submission
+        console.log("Form submitted!");document.getElementById('expenseForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // prevent page reload
+
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                alert('Vous devez être connecté');
+                return;
+            }
+
+            // Get form values
+            const category = document.getElementById('category').value;
+            const amount = Number(document.getElementById('amount').value);
+            const date = document.getElementById('date').value;
+            const description = document.getElementById('description').value;
+
+            // Save to Firestore
+            firebase.firestore().collection('expenses').add({
+                userId: user.uid,
+                category: category,
+                amount: amount,
+                date: date,
+                description: description,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                alert('Dépense enregistrée !');
+                window.location.href = 'dashboard.html'; // go back to dashboard
+            })
+            .catch((error) => {
+                alert('Erreur : ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>
